@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace Liopleurodons_Pocket_Business_Helper
 {
     public class Program
