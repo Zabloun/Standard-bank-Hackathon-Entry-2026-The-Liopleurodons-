@@ -13,7 +13,11 @@ namespace Liopleurodons_Pocket_Business_Helper.Models
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "Please select a category.")]
+        public int CategoryID { get; set; }  // foreign key property
+
         [Required(ErrorMessage = "Please select a category for the product.")]
+
         public Category ProductCategory { get; set; }
 
         [Required(ErrorMessage = "Please enter the price of the product.")]

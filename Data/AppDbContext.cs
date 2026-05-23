@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace GuitarShop.Data
+namespace Liopleurodons_Pocket_Business_Helper.Data
 {
     public class AppDbContext :IdentityDbContext<IdentityUser>
     {
