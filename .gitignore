@@ -1,0 +1,56 @@
+# Ignore Visual Studio and common development artifacts
+
+# Visual Studio workspace
+.vs/
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+*/bin/
+*/obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.cache
+
+# Rider / ReSharper / IDEs
+_ReSharper*/
+*.DotSettings.user
+.idea/
+*.sln.iml
+
+# Visual Studio Code
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+.nuget/
+
+# Test results
+TestResults/
+*.trx
+
+# Logs, temp files
+*.log
+*.tmp
+*.temp
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Node / env
+node_modules/
+.env
+.env.*
+
+# Misc
+*.vsix
+*.publishsettings
+*.csproj.user
+*.db
