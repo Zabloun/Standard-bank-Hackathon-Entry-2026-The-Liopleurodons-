@@ -8,7 +8,6 @@ namespace Liopleurodons_Pocket_Business_Helper.Models
         
          public int PurchasesId { get; set; }
 
-        [ForeignKey("PurchasesProduct")]
         public Product PurchasesProduct { get; set; }
 
         [Required(ErrorMessage = "Please enter a valid quantity to purchase")]

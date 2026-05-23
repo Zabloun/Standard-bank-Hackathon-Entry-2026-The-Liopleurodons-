@@ -1,6 +1,3 @@
-// ============================================================
-// BusinessController.cs
-// ============================================================
 using Liopleurodons_Pocket_Business_Helper.Data;
 using Liopleurodons_Pocket_Business_Helper.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;

@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Liopleurodons_Pocket_Business_Helper.Controllers
 {
-    // ============================================================
-    //  STOCK CONTROLLER
-    // ============================================================
     public class StockController : Controller
     {
         private readonly IRepositoryWrapper _repo;

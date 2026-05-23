@@ -14,6 +14,7 @@
 
         IStockRepository Stock { get; }
 
+
         void Save();
     }
 }
