@@ -12,6 +12,5 @@ namespace Liopleurodons_Pocket_Business_Helper.Models
         [Required(ErrorMessage = "Category Description is required.")]
         public string CategoryDescription { get; set; }
         
-
     }
 }
