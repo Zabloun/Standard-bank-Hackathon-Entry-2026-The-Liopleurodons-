@@ -1,0 +1,66 @@
+@*
+  Application layout. The original file was empty which caused:
+    InvalidOperationException: RenderBody has not been called for the page at '/Views/Shared/_Layout.cshtml'
+  This layout includes @RenderBody() so views (like Views/Home/Index.cshtml) can render their content.
+  Keep comments to explain why RenderBody and optional sections exist.
+*@
+@{
+    var title = ViewData["Title"] ?? "Liopleurodons";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@title - Liopleurodons</title>
+
+    @* Bootstrap 5 CDN for quick styling; replace with local files if needed. *@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    @* App stylesheet (optional). Create wwwroot/css/site.css if you use it. *@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @* Allow views to inject additional head styles/content. Not required. *@
+    @RenderSection("Styles", required: false)
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Liopleurodons</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Business" asp-action="Index">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Stock" asp-action="Index">Stock</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Purchases" asp-action="Index">Purchases</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @* Main content area: RenderBody must be present in the layout so views can render their content. *@
+    <main role="main" class="flex-fill">
+        <div class="container py-4">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="bg-light text-muted py-3 mt-auto">
+        <div class="container d-flex justify-content-between">
+            <small>© @DateTime.Now.Year Liopleurodons Pocket Business Helper</small>
+            <small class="text-end">Lightweight local business helper</small>
+        </div>
+    </footer>
+
+    @* Scripts: Bootstrap bundle + optional site script. Views can inject page scripts via "Scripts" section. *@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

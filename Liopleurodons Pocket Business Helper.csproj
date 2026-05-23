@@ -12,7 +12,6 @@
     <Folder Include="Infrastructure\" />
     <Folder Include="Models\ViewModels\" />
     <Folder Include="Views\Account\" />
-    <Folder Include="Views\Home\" />
 
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.1" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.1" />
