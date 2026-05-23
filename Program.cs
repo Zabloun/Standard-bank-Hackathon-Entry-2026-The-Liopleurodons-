@@ -49,6 +49,12 @@ namespace Liopleurodons_Pocket_Business_Helper
             SeedData.EnsurePopulated(app);
 
             app.Run();
+
+            //If you get an error about something already existing in the database,
+            //you can drop the database and re-run the application to re-create the database with the seed data.
+            //don't forget that the migrations might need to be re-created as well.
+            //You can do this by deleting the Migrations folder and running the following commands in the Package Manager Console:
+            //Add-Migration InitialCreate and then Update-Database.
         }
     }
 }
