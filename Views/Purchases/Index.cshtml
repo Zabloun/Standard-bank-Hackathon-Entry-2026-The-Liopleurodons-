@@ -1,0 +1,51 @@
+@model List<PurchaseListViewModel>
+@{
+    ViewData["Title"] = "Purchases";
+    ViewData["ActiveNav"] = "business";
+}
+
+<div class="page-header">
+    <div>
+        <div class="page-title">Purchases</div>
+        <div class="page-sub">Restock history</div>
+    </div>
+    <a asp-controller="Business" asp-action="Index" class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-state-icon">🧾</div>
+        <div class="empty-state-title">No purchases yet</div>
+        Record your first stock purchase below.
+    </div>
+}
+else
+{
+    <!-- Running total -->
+    <div class="card">
+        <div class="card-label">Total Spent on Stock</div>
+        <div class="card-value red">R@Model.Sum(p => p.TotalPrice).ToString("N2")</div>
+    </div>
+
+    <div class="section-title">Purchase History</div>
+    <div class="card" style="padding:0">
+        @foreach (var p in Model)
+        {
+            <div class="list-item">
+                <div class="list-item-icon">🧾</div>
+                <div class="list-item-body">
+                    <div class="list-item-title">@p.ProductName</div>
+                    <div class="list-item-sub">Qty: @p.Quantity · R@p.UnitPrice.ToString("N2") each · @p.DateLabel</div>
+                </div>
+                <div class="txn-amount exp">−R@p.TotalPrice.ToString("N2")</div>
+            </div>
+        }
+    </div>
+}
+
+<div style="margin:16px 20px 0">
+    <a asp-controller="Purchases" asp-action="RestockCreate" class="btn btn-primary">+ Record Purchase</a>
+</div>

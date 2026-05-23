@@ -1,0 +1,40 @@
+@model CategoryViewModel
+@{
+    ViewData["Title"] = "New Category";
+    ViewData["ActiveNav"] = "business";
+}
+
+<div class="page-header">
+    <div>
+        <div class="page-title">New Category</div>
+        <div class="page-sub">Organise your products</div>
+    </div>
+    <a asp-controller="Categories" asp-action="Index" class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </a>
+</div>
+
+<form asp-controller="Categories" asp-action="Create" method="post" class="form-section">
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+    <div class="form-group">
+        <label asp-for="CategoryName" class="form-label">Category Name</label>
+        <input asp-for="CategoryName" class="form-input" placeholder="e.g. Beverages" />
+        <span asp-validation-for="CategoryName" class="form-error"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryDescription" class="form-label">Description</label>
+        <input asp-for="CategoryDescription" class="form-input" placeholder="Brief description…" />
+        <span asp-validation-for="CategoryDescription" class="form-error"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Category</button>
+    <div style="margin-top:10px">
+        <a asp-controller="Categories" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

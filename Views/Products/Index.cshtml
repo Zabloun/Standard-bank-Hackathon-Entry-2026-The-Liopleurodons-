@@ -1,0 +1,54 @@
+@model List<ProductListViewModel>
+@{
+    ViewData["Title"] = "Products";
+    ViewData["ActiveNav"] = "business";
+}
+
+<div class="page-header">
+    <div>
+        <div class="page-title">Products</div>
+        <div class="page-sub">@Model.Count item@(Model.Count == 1 ? "" : "s") in catalogue</div>
+    </div>
+    <a asp-controller="Business" asp-action="Index" class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-state-icon">🛍️</div>
+        <div class="empty-state-title">No products yet</div>
+        Add your first product to start tracking sales.
+    </div>
+}
+else
+{
+    <div class="card" style="padding:0">
+        @foreach (var p in Model)
+        {
+            <div class="list-item">
+                <div class="list-item-icon">🛍️</div>
+                <div class="list-item-body">
+                    <div class="list-item-title">@p.ProductName</div>
+                    <div class="list-item-sub">@p.CategoryName · @p.Description</div>
+                    <div class="stock-bar-wrap" style="width:80px">
+                        <div class="stock-bar @p.StockLevelCss" style="width:@p.StockBarPercent%"></div>
+                    </div>
+                </div>
+                <div style="text-align:right">
+                    <div class="list-item-value" style="color:var(--green)">R@p.Price.ToString("N2")</div>
+                    <span class="pill @p.StockLabelPill" style="font-size:10px;margin-top:4px">@p.StockLabel</span>
+                </div>
+                <div class="list-item-actions">
+                    <a asp-controller="Products" asp-action="Edit" asp-route-id="@p.ProductId" class="action-link edit">Edit</a>
+                    <a asp-controller="Products" asp-action="Delete" asp-route-id="@p.ProductId" class="action-link delete">Del</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div style="margin:16px 20px 0">
+    <a asp-controller="Products" asp-action="Create" class="btn btn-primary">+ Add Product</a>
+</div>

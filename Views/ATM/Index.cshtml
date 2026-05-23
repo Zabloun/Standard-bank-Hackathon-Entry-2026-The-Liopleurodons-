@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Nearby ATMs";
+    ViewData["ActiveNav"] = "atm";
+}
+
+<div class="page-header">
+    <div>
+        <div class="page-title">Nearby ATMs</div>
+        <div class="page-sub">Bloemfontein · Updated now</div>
+    </div>
+    <a asp-controller="Business" asp-action="Index" class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </a>
+</div>
+
+<!-- Map Placeholder -->
+<div class="map-placeholder">
+    <div class="map-grid"></div>
+    <!-- User location -->
+    <div class="map-dot you" style="top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="map-label" style="top:38%;left:52%;transform:translateX(-50%)">You</div>
+    <!-- ATM dots -->
+    <div class="map-dot atm" style="top:28%;left:32%"></div>
+    <div class="map-dot atm" style="top:62%;left:68%"></div>
+    <div class="map-dot atm" style="top:30%;left:70%"></div>
+    <div class="map-dot atm" style="top:72%;left:25%"></div>
+</div>
+
+<div class="section-title">4 ATMs Found</div>
+
+<!-- Standard Bank -->
+<div class="atm-item" onclick="showToast('Opening directions…')">
+    <div class="bank-logo" style="background:#0057A8;">SB</div>
+    <div class="atm-info">
+        <div class="atm-name">Standard Bank ATM</div>
+        <div class="atm-addr">Shop 14, Mimosa Mall</div>
+    </div>
+    <div style="text-align:right">
+        <div class="atm-dist">0.3 km</div>
+        <div class="atm-addr">Open 24hrs</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+</div>
+
+<!-- FNB -->
+<div class="atm-item" onclick="showToast('Opening directions…')">
+    <div class="bank-logo" style="background:#009B3A;">FNB</div>
+    <div class="atm-info">
+        <div class="atm-name">FNB ATM</div>
+        <div class="atm-addr">Preller Square</div>
+    </div>
+    <div style="text-align:right">
+        <div class="atm-dist">0.7 km</div>
+        <div class="atm-addr">Open 24hrs</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+</div>
+
+<!-- ABSA -->
+<div class="atm-item" onclick="showToast('Opening directions…')">
+    <div class="bank-logo" style="background:#E4003A;">ABSA</div>
+    <div class="atm-info">
+        <div class="atm-name">ABSA ATM</div>
+        <div class="atm-addr">Loch Logan Waterfront</div>
+    </div>
+    <div style="text-align:right">
+        <div class="atm-dist">1.1 km</div>
+        <div class="atm-addr">Open 24hrs</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+</div>
+
+<!-- Nedbank -->
+<div class="atm-item" onclick="showToast('Opening directions…')">
+    <div class="bank-logo" style="background:#6D2077;">NED</div>
+    <div class="atm-info">
+        <div class="atm-name">Nedbank ATM</div>
+        <div class="atm-addr">Westdene, Bloemfontein</div>
+    </div>
+    <div style="text-align:right">
+        <div class="atm-dist">1.4 km</div>
+        <div class="atm-addr">Open 24hrs</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+</div>
+
+<div style="margin:16px 20px 0">
+    <button class="btn btn-primary" onclick="showToast('✓ Day saved! Go deposit at any ATM.')">
+        Confirm &amp; Save Day
+    </button>
+</div>

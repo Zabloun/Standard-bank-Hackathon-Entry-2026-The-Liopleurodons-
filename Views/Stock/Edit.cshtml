@@ -1,0 +1,52 @@
+@model StockAdjustViewModel
+@{
+    ViewData["Title"] = "Adjust Stock";
+    ViewData["ActiveNav"] = "business";
+}
+
+<div class="page-header">
+    <div>
+        <div class="page-title">Adjust Stock</div>
+        <div class="page-sub">Update quantity on hand</div>
+    </div>
+    <a asp-controller="Stock" asp-action="Index" class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </a>
+</div>
+
+<!-- Product Info Card -->
+<div class="card">
+    <div class="card-label">Product</div>
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px">@Model.ProductName</div>
+    <div style="font-size:13px;color:var(--txt2);margin-bottom:8px">@Model.ProductDescription</div>
+    <div style="display:flex;gap:12px">
+        <span class="pill blue">@Model.CategoryName</span>
+        <span class="pill green">R@Model.ProductPrice.ToString("N2")</span>
+    </div>
+</div>
+
+<form asp-controller="Stock" asp-action="Edit" method="post" class="form-section">
+    <input type="hidden" asp-for="StockId" />
+    <input type="hidden" asp-for="ProductId" />
+
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+    <div class="form-group">
+        <label asp-for="Quantity" class="form-label">Quantity on Hand</label>
+        <input asp-for="Quantity" class="form-input" type="number" min="0" placeholder="0" />
+        <span asp-validation-for="Quantity" class="form-error"></span>
+        <div style="font-size:11px;color:var(--txt3);margin-top:6px">
+            Enter the current physical count of this item in your store.
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Stock Level</button>
+
+    <div style="margin-top:10px">
+        <a asp-controller="Stock" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
