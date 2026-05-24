@@ -14,9 +14,5 @@ namespace Liopleurodons_Pocket_Business_Helper.Controllers
         public IActionResult Index() => View();
     }
 
-    /// <summary>Stokvel / savings group screen.</summary>
-    public class StokvelController : Controller
-    {
-        public IActionResult Index() => View();
-    }
+
 }
