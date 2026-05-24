@@ -1,66 +1,38 @@
-@*
-  Application layout. The original file was empty which caused:
-    InvalidOperationException: RenderBody has not been called for the page at '/Views/Shared/_Layout.cshtml'
-  This layout includes @RenderBody() so views (like Views/Home/Index.cshtml) can render their content.
-  Keep comments to explain why RenderBody and optional sections exist.
-*@
 @{
-        var title = ViewData["Title"] ?? "Liopleurodons";
+    ViewData["Title"] = "Home";
 }
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@title - Liopleurodons</title>
 
-    @* Bootstrap 5 CDN for quick styling; replace with local files if needed. *@
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-    @* App stylesheet (optional). Create wwwroot/css/site.css if you use it. *@
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
-    @* Allow views to inject additional head styles/content. Not required. *@
-    @RenderSection("Styles", required: false)
-</head>
-<body class="d-flex flex-column min-vh-100">
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Liopleurodons</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Business" asp-action="Index">Products</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Stock" asp-action="Index">Stock</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Purchases" asp-action="Index">Purchases</a></li>
-                    </ul>
+<div class="text-center py-5">
+    <h1 class="display-5 fw-bold">Welcome to Liopleurodons</h1>
+    <p class="lead text-muted">Your Pocket Business Helper</p>
+    <hr class="my-4" />
+    <div class="row g-4 justify-content-center mt-2">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📦 Products</h5>
+                    <p class="card-text text-muted">Manage your product catalogue and pricing.</p>
+                    <a asp-controller="Business" asp-action="Index" class="btn btn-primary">Go to Products</a>
                 </div>
             </div>
-        </nav>
-    </header>
-
-    @* Main content area: RenderBody must be present in the layout so views can render their content. *@
-    <main role="main" class="flex-fill">
-        <div class="container py-4">
-            @RenderBody()
         </div>
-    </main>
-
-    <footer class="bg-light text-muted py-3 mt-auto">
-        <div class="container d-flex justify-content-between">
-            <small>� @DateTime.Now.Year Liopleurodons Pocket Business Helper</small>
-            <small class="text-end">Lightweight local business helper</small>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">🗃️ Stock</h5>
+                    <p class="card-text text-muted">Track your inventory and stock levels.</p>
+                    <a asp-controller="Stock" asp-action="Index" class="btn btn-primary">Go to Stock</a>
+                </div>
+            </div>
         </div>
-    </footer>
-
-    @* Scripts: Bootstrap bundle + optional site script. Views can inject page scripts via "Scripts" section. *@
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
-</body>
-</html>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">🧾 Purchases</h5>
+                    <p class="card-text text-muted">View and record your purchase history.</p>
+                    <a asp-controller="Purchases" asp-action="Index" class="btn btn-primary">Go to Purchases</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
