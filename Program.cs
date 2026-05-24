@@ -13,13 +13,15 @@ namespace Liopleurodons_Pocket_Business_Helper
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
-            //Database Option 1: SQL Server
+            // SQLite — works on Windows, Linux, and macOS without extra setup.
+            // To switch to SQL Server, comment this out and uncomment the UseSqlServer block below,
+            // then update appsettings.json with a valid SQL Server connection string.
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            //Database Option 2: SQLite 
+            // SQL Server option (requires a running SQL Server / LocalDB instance):
             //builder.Services.AddDbContext<AppDbContext>(options =>
-            //    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddRouting(options =>
             {
@@ -35,13 +37,10 @@ namespace Liopleurodons_Pocket_Business_Helper
             app.UseStaticFiles();
             app.UseRouting();
 
-            // The UseAuthentication and UseAuthorization middleware are added
-            // to the request pipeline to allow use of Identity features such as user authentication and authorization in the application.
-            // This goes hanf in hand with the IdentityUser and IdentityRole services that were added to the service container earlier in the code.
+            // UseAuthentication must come before UseAuthorization
             app.UseAuthentication();
-            app.UseAuthorization();//order is important
+            app.UseAuthorization();
 
-            // least specific route - 0 required segments 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}/{slug?}");
@@ -49,12 +48,6 @@ namespace Liopleurodons_Pocket_Business_Helper
             SeedData.EnsurePopulated(app);
 
             app.Run();
-
-            //If you get an error about something already existing in the database,
-            //you can drop the database and re-run the application to re-create the database with the seed data.
-            //don't forget that the migrations might need to be re-created as well.
-            //You can do this by deleting the Migrations folder and running the following commands in the Package Manager Console:
-            //Add-Migration InitialCreate and then Update-Database.
         }
     }
 }
