@@ -27,7 +27,7 @@ else
     <!-- Running total -->
     <div class="card">
         <div class="card-label">Total Spent on Stock</div>
-        <div class="card-value red">R@Model.Sum(p => p.TotalPrice).ToString("N2")</div>
+        <div class="card-value red">R @Model.Sum(p => p.TotalPrice).ToString("N2")</div>
     </div>
 
     <div class="section-title">Purchase History</div>
@@ -38,9 +38,9 @@ else
                 <div class="list-item-icon">🧾</div>
                 <div class="list-item-body">
                     <div class="list-item-title">@p.ProductName</div>
-                    <div class="list-item-sub">Qty: @p.Quantity · R@p.UnitPrice.ToString("N2") each · @p.DateLabel</div>
+                    <div class="list-item-sub">Qty: @p.Quantity · R @p.UnitPrice.ToString("N2") each · @p.DateLabel</div>
                 </div>
-                <div class="txn-amount exp">−R@p.TotalPrice.ToString("N2")</div>
+                <div class="txn-amount exp">−R @p.TotalPrice.ToString("N2")</div>
             </div>
         }
     </div>

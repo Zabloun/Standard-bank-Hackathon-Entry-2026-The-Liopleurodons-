@@ -6,8 +6,8 @@ namespace Liopleurodons_Pocket_Business_Helper.Models.ViewModels
     /// </summary>
     public class BusinessDashboardViewModel
     {
-        public string BusinessName { get; set; } = "Thabo's Spaza";
-        public string OwnerInitials { get; set; } = "TS";
+        public string BusinessName { get; set; } = "My Business";
+        public string OwnerInitials { get; set; } = "";
         public string DayLabel { get; set; } = DateTime.Now.DayOfWeek.ToString();
 
         // Today's P&L summary

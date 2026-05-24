@@ -1,6 +1,7 @@
 using Liopleurodons_Pocket_Business_Helper.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Liopleurodons_Pocket_Business_Helper.Controllers
 {
@@ -61,6 +62,8 @@ namespace Liopleurodons_Pocket_Business_Helper.Controllers
             var result = await _userManager.CreateAsync(user, vm.Password);
             if (result.Succeeded)
             {
+                // Store the business name as a user claim so it persists
+                await _userManager.AddClaimAsync(user, new Claim("BusinessName", vm.BusinessName));
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 TempData["Toast"] = "✓ Account created! Welcome.";
                 return RedirectToAction("Index", "Business");

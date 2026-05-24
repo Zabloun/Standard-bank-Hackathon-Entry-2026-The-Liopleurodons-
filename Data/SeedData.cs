@@ -105,6 +105,45 @@ namespace Liopleurodons_Pocket_Business_Helper.Data
             }
 
             context.SaveChanges();
+
+            // Seed stock levels for each product (only if stock table is empty)
+            if (!context.Stock.Any())
+            {
+                var products = context.Products.ToList();
+                foreach (var product in products)
+                {
+                    context.Stock.Add(new Stock
+                    {
+                        StockProduct = product,
+                        Quantity = 20
+                    });
+                }
+                context.SaveChanges();
+            }
+
+            // Seed sample purchases (sales + expenses) so dashboard shows real data on first run
+            if (!context.Purchases.Any())
+            {
+                var flour    = context.Products.FirstOrDefault(p => p.ProductName == "Flour 5Kg");
+                var airtime  = context.Products.FirstOrDefault(p => p.ProductName == "MTN R20 Airtime");
+                var sugar    = context.Products.FirstOrDefault(p => p.ProductName == "Sugar 2Kg");
+                var beer     = context.Products.FirstOrDefault(p => p.ProductName == "Zamalek Quart(750ml)");
+                var voda     = context.Products.FirstOrDefault(p => p.ProductName == "Vodacom R50 Airtime");
+                var soap     = context.Products.FirstOrDefault(p => p.ProductName == "Sunlight Liquid 750ml");
+
+                var purchases = new List<Purchases>();
+
+                if (flour  != null) purchases.Add(new Purchases { PurchasesProduct = flour,   Quantity = 2,  TotalPrice = flour.Price  * 2,  IsIncome = true  });
+                if (airtime != null) purchases.Add(new Purchases { PurchasesProduct = airtime, Quantity = 5,  TotalPrice = airtime.Price * 5, IsIncome = true  });
+                if (sugar  != null) purchases.Add(new Purchases { PurchasesProduct = sugar,   Quantity = 3,  TotalPrice = sugar.Price  * 3,  IsIncome = true  });
+                if (beer   != null) purchases.Add(new Purchases { PurchasesProduct = beer,    Quantity = 4,  TotalPrice = beer.Price   * 4,  IsIncome = true  });
+                if (voda   != null) purchases.Add(new Purchases { PurchasesProduct = voda,    Quantity = 2,  TotalPrice = voda.Price   * 2,  IsIncome = true  });
+                if (soap   != null) purchases.Add(new Purchases { PurchasesProduct = soap,    Quantity = 10, TotalPrice = soap.Price   * 10, IsIncome = false });
+                if (flour  != null) purchases.Add(new Purchases { PurchasesProduct = flour,   Quantity = 5,  TotalPrice = flour.Price  * 5,  IsIncome = false });
+
+                context.Purchases.AddRange(purchases);
+                context.SaveChanges();
+            }
         }
 
         private static int EnsureCategory(AppDbContext context, string name, string description)

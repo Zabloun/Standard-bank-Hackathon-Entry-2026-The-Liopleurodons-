@@ -79,6 +79,9 @@ namespace Liopleurodons_Pocket_Business_Helper.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsIncome")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("PurchasesId");
 
                     b.HasIndex("PurchasesProductProductId");

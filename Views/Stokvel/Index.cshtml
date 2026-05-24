@@ -18,7 +18,7 @@
 <!-- Total Pot Card -->
 <div class="card" style="background:linear-gradient(135deg,#1A1000,#2A1A00); border-color:rgba(245,166,35,0.2)">
     <div class="card-label">Total Pot</div>
-    <div class="card-value amber">R@Model.TotalPot.ToString("N2")</div>
+    <div class="card-value amber">R @Model.TotalPot.ToString("N2")</div>
     <div style="margin-top:12px; display:flex; gap:24px; flex-wrap:wrap;">
         <div>
             <div style="font-size:10px;color:rgba(255,255,255,0.35);">This month's holder</div>
@@ -26,7 +26,7 @@
         </div>
         <div>
             <div style="font-size:10px;color:rgba(255,255,255,0.35);">Monthly contribution</div>
-            <div style="font-size:13px;font-weight:500;margin-top:2px;">R@Model.MonthlyContribution.ToString("N0")</div>
+            <div style="font-size:13px;font-weight:500;margin-top:2px;">R @Model.MonthlyContribution.ToString("N0")</div>
         </div>
         <div>
             <div style="font-size:10px;color:rgba(255,255,255,0.35);">Cycle start</div>
@@ -48,7 +48,7 @@
         </div>
         <div style="text-align:right;">
             <div class="countdown-label">Your position</div>
-            <div class="countdown-val">#@Model.YourPosition of @Model.TotalMembers</div>
+            <div class="countdown-val"># @Model.YourPosition of @Model.TotalMembers</div>
         </div>
     </div>
 </div>
@@ -91,12 +91,12 @@
             </div>
             @if (c.Paid)
             {
-                <div class="contrib-amount paid">+R@c.Amount.ToString("N0")</div>
+                <div class="contrib-amount paid">+R @c.Amount.ToString("N0")</div>
                 <span class="pill green" style="margin-left:6px; font-size:10px;">Paid</span>
             }
             else
             {
-                <div class="contrib-amount pending">R@c.Amount.ToString("N0")</div>
+                <div class="contrib-amount pending">R @c.Amount.ToString("N0")</div>
                 <span class="pill amber" style="margin-left:6px; font-size:10px;">Pending</span>
             }
         </div>
@@ -124,11 +124,11 @@
             <div style="background:var(--amber-bg); border:0.5px solid rgba(245,166,35,0.3); border-radius:12px; padding:12px 14px; margin-bottom:20px; display:flex; justify-content:space-between;">
                 <div>
                     <div style="font-size:11px; color:rgba(255,255,255,0.4);">Current pot</div>
-                    <div style="font-family:'Syne',sans-serif; font-size:18px; font-weight:700; color:var(--amber);">R@Model.TotalPot.ToString("N2")</div>
+                    <div style="font-family:'Syne',sans-serif; font-size:18px; font-weight:700; color:var(--amber);">R @Model.TotalPot.ToString("N2")</div>
                 </div>
                 <div style="text-align:right;">
                     <div style="font-size:11px; color:rgba(255,255,255,0.4);">Monthly target</div>
-                    <div style="font-size:15px; font-weight:600; color:var(--txt);">R@Model.MonthlyContribution.ToString("N0")</div>
+                    <div style="font-size:15px; font-weight:600; color:var(--txt);">R @Model.MonthlyContribution.ToString("N0")</div>
                 </div>
             </div>
 
@@ -141,7 +141,7 @@
             <div style="display:flex; gap:8px; margin-bottom:20px;">
                 @foreach (var amt in new[] { 100, 250, 500, 1000 })
                 {
-                    <button type="button" class="btn btn-secondary" style="flex:1; padding:8px; font-size:12px; border-radius:10px;" onclick="document.querySelector('[name=Amount]').value='@amt'">R@amt</button>
+                    <button type="button" class="btn btn-secondary" style="flex:1; padding:8px; font-size:12px; border-radius:10px;" onclick="document.querySelector('[name=Amount]').value='@amt'">R @amt</button>
                 }
             </div>
 

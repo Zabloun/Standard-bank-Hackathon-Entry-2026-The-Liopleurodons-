@@ -1,13 +1,17 @@
 @model PurchaseCreateViewModel
 @{
-    ViewData["Title"] = "Record Purchase";
+    ViewData["Title"] = Model.IsIncome ? "Record Sale" : "Add Expense";
     ViewData["ActiveNav"] = "business";
+    var cardBg    = Model.IsIncome ? "var(--green-bg)" : "var(--red-bg)";
+    var cardColor = Model.IsIncome ? "var(--green)" : "var(--red)";
+    var cardLabel = Model.IsIncome ? "Estimated Income" : "Estimated Cost";
+    var cardClass = Model.IsIncome ? "green" : "red";
 }
 
 <div class="page-header">
     <div>
-        <div class="page-title">Add Expense</div>
-        <div class="page-sub">Record stock restock</div>
+        <div class="page-title"> @(Model.IsIncome ? "Record Sale" : "Add Expense")</div>
+        <div class="page-sub"> @(Model.IsIncome ? "Log new income" : "Record stock restock")</div>
     </div>
     <a asp-controller="Business" asp-action="Index" class="btn-icon">
         <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
@@ -17,8 +21,11 @@
 <form asp-controller="Purchases" asp-action="RestockCreate" method="post" class="form-section">
     <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
 
+    @* Pass IsIncome through so the POST action knows the type *@
+    <input type="hidden" asp-for="IsIncome" />
+
     <div class="form-group">
-        <label asp-for="ProductId" class="form-label">Product Purchased</label>
+        <label asp-for="ProductId" class="form-label"> @(Model.IsIncome ? "Product Sold" : "Product Purchased")</label>
         <select asp-for="ProductId" class="form-select" id="product-select" onchange="updateEstimate()">
             <option value="">— Choose product —</option>
             @foreach (var p in Model.Products)
@@ -32,7 +39,7 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Quantity" class="form-label">Quantity Bought</label>
+        <label asp-for="Quantity" class="form-label">@(Model.IsIncome ? "Quantity Sold" : "Quantity Bought")</label>
         <input asp-for="Quantity" class="form-input" type="number" min="1" placeholder="e.g. 24"
                id="qty-input" oninput="updateEstimate()" />
         <span asp-validation-for="Quantity" class="form-error"></span>
@@ -40,13 +47,13 @@
 
     <!-- Live cost estimate -->
     <div id="cost-preview" style="display:none;margin-bottom:16px">
-        <div class="card" style="background:var(--red-bg);border-color:var(--red);padding:14px 16px">
-            <div class="card-label" style="color:var(--red)">Estimated Cost</div>
-            <div class="card-value red" id="cost-val">R0.00</div>
+        <div class="card" style="background:@cardBg;border-color:@cardColor;padding:14px 16px">
+            <div class="card-label" style="color:@cardColor">@cardLabel</div>
+            <div class="card-value @cardClass" id="cost-val">R0.00</div>
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Record Purchase</button>
+    <button type="submit" class="btn btn-primary"> @(Model.IsIncome ? "Record Sale" : "Record Purchase")</button>
     <div style="margin-top:10px">
         <a asp-controller="Business" asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>

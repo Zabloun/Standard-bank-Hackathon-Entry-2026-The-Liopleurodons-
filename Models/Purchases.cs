@@ -16,6 +16,9 @@ namespace Liopleurodons_Pocket_Business_Helper.Models
 
         public decimal TotalPrice { get; set; }
 
+        /// <summary>True = sale/income; False = expense/restock cost.</summary>
+        public bool IsIncome { get; set; }
+
         public decimal TotalPriceCalculation()
         {
             decimal totalPrice = PurchasesProduct.Price * Quantity;

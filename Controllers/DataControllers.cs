@@ -90,12 +90,13 @@ namespace Liopleurodons_Pocket_Business_Helper.Controllers
             return View(vm);
         }
 
-        // GET /Purchases/RestockCreate
+        // GET /Purchases/RestockCreate  — used for "Record Sale" (income)
         public IActionResult RestockCreate()
         {
             var vm = new PurchaseCreateViewModel
             {
-                Products = GetProductList()
+                Products  = GetProductList(),
+                IsIncome  = true
             };
             return View(vm);
         }
@@ -122,29 +123,36 @@ namespace Liopleurodons_Pocket_Business_Helper.Controllers
             {
                 PurchasesProduct = product,
                 Quantity         = vm.Quantity,
-                TotalPrice       = product.Price * vm.Quantity
+                TotalPrice       = product.Price * vm.Quantity,
+                IsIncome         = vm.IsIncome
             };
             _repo.Purchases.Create(purchase);
 
-            // Increase stock level
+            // Adjust stock: sales reduce stock, restocks increase it
             var stock = _repo.Stock.FindAll().FirstOrDefault(s => s.StockProduct?.ProductId == product.ProductId);
             if (stock != null)
             {
-                stock.Quantity += vm.Quantity;
+                if (vm.IsIncome)
+                    stock.Quantity -= vm.Quantity; // sale reduces stock
+                else
+                    stock.Quantity += vm.Quantity; // restock increases stock
                 _repo.Stock.Update(stock);
             }
 
             _repo.Save();
 
-            TempData["Toast"] = $"✓ Expense logged — R{purchase.TotalPrice:N2}";
+            if (vm.IsIncome)
+                TempData["Toast"] = $"✓ Sale recorded — R{purchase.TotalPrice:N2}";
+            else
+                TempData["Toast"] = $"✓ Expense logged — R{purchase.TotalPrice:N2}";
             return RedirectToAction("Index", "Business");
         }
 
-        // Reuse RestockCreate view for the "Record Sale" quick action
+        // Reuse RestockCreate view for the "Log Expense" quick action
         // GET /Purchases/Create
         public IActionResult Create()
         {
-            var vm = new PurchaseCreateViewModel { Products = GetProductList() };
+            var vm = new PurchaseCreateViewModel { Products = GetProductList(), IsIncome = false };
             return View("RestockCreate", vm);
         }
 

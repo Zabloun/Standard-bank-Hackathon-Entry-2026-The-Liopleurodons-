@@ -20,6 +20,9 @@ namespace Liopleurodons_Pocket_Business_Helper.Models.ViewModels
 
         // Populated by controller for the dropdown
         public List<ProductSelectItem> Products { get; set; } = new();
+
+        /// <summary>True = income/sale; False = expense/restock.</summary>
+        public bool IsIncome { get; set; }
     }
 
     public class ProductSelectItem
