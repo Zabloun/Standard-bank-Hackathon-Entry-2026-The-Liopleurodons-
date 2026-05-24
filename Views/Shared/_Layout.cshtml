@@ -1,54 +1,285 @@
 @{
-    var title = ViewData["Title"] ?? "Liopleurodons";
+    var title = ViewData["Title"] ?? "Skhokho";
+    var activeNav = ViewData["ActiveNav"]?.ToString() ?? "";
 }
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@title - Liopleurodons</title>
+    <title>@title — Skhokho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --green: #00C47A; --green-dk: #00A264; --green-bg: rgba(0,196,122,0.1);
+            --blue: #1A5CFF; --blue-dk: #1248D4; --blue-bg: rgba(26,92,255,0.1);
+            --amber: #F5A623; --amber-bg: rgba(245,166,35,0.12);
+            --red: #E53935; --red-bg: rgba(229,57,53,0.1);
+            --bg: #0D0F12; --bg2: #15181E; --bg3: #1C2028; --bg4: #242832;
+            --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
+            --txt: #F0F2F5; --txt2: #9EA8B8; --txt3: #5C6880;
+            --radius: 16px; --radius-sm: 10px;
+        }
+        html, body { min-height: 100%; background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--txt); }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        /* ========== PHONE SHELL ========== */
+        .shell {
+            width: 390px; min-height: 844px;
+            margin: 20px auto;
+            background: var(--bg);
+            border-radius: 44px;
+            border: 1.5px solid var(--border2);
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            box-shadow: 0 40px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+            position: relative;
+        }
+        @@media (max-width: 420px) { .shell { width: 100%; border-radius: 0; margin: 0; min-height: 100vh; border: none; } }
 
+        /* Notch */
+        .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 34px; background: #000; border-radius: 0 0 22px 22px; z-index: 100; }
+
+        /* Status bar */
+        .status { height: 50px; padding: 14px 28px 0; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 99; }
+        .status-time { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; }
+        .status-icons { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--txt2); }
+
+        /* ========== CONTENT AREA ========== */
+        .app-content { flex: 1; overflow-y: auto; overflow-x: hidden; padding-bottom: 90px; }
+        .app-content::-webkit-scrollbar { display: none; }
+
+        /* ========== NAV ========== */
+        .nav {
+            position: sticky; bottom: 0; left: 0; right: 0;
+            height: 84px; padding: 0 10px 18px;
+            background: rgba(13,15,18,0.95);
+            backdrop-filter: blur(20px);
+            border-top: 0.5px solid var(--border);
+            display: flex; justify-content: space-around; align-items: flex-end;
+            z-index: 200;
+        }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 18px; border-radius: 12px; background: none; border: none; cursor: pointer; color: var(--txt3); font-size: 10px; font-family: 'DM Sans', sans-serif; transition: all 0.2s; text-decoration: none; }
+        .nav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .nav-btn.active, .nav-btn:hover { color: var(--green); }
+        .nav-btn.active svg, .nav-btn:hover svg { stroke: var(--green); }
+        .nav-btn span { font-size: 10px; font-weight: 500; }
+
+        /* ========== SHARED COMPONENTS ========== */
+        .page-header { padding: 22px 24px 16px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .page-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+        .page-sub { font-size: 13px; color: var(--txt2); margin-top: 2px; }
+
+        .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--blue)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: #fff; flex-shrink: 0; }
+
+        .card { margin: 0 20px 14px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
+        .card-label { font-size: 11px; color: var(--txt3); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 500; margin-bottom: 6px; }
+        .card-value { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; letter-spacing: -1px; }
+        .card-value.green { color: var(--green); } .card-value.blue { color: var(--blue); } .card-value.amber { color: var(--amber); } .card-value.red { color: var(--red); }
+
+        .pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+        .pill.green { background: var(--green-bg); color: var(--green); }
+        .pill.red   { background: var(--red-bg);   color: var(--red); }
+        .pill.amber { background: var(--amber-bg); color: var(--amber); }
+        .pill.blue  { background: var(--blue-bg);  color: var(--blue); }
+
+        .section-title { font-size: 12px; font-weight: 500; color: var(--txt3); text-transform: uppercase; letter-spacing: 1px; padding: 0 24px 10px; }
+
+        /* Buttons */
+        .btn { border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; border-radius: 14px; transition: all 0.15s; }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: var(--green); color: #000; font-size: 15px; padding: 14px; width: 100%; display: block; }
+        .btn-primary:hover { background: var(--green-dk); color: #000; text-decoration: none; }
+        .btn-secondary { background: var(--bg3); color: var(--txt); font-size: 14px; padding: 12px; border: 0.5px solid var(--border2); width: 100%; display: block; }
+        .btn-secondary:hover { background: var(--bg4); color: var(--txt); text-decoration: none; }
+        .btn-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--bg3); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s; text-decoration: none; }
+        .btn-icon svg { width: 18px; height: 18px; stroke: var(--txt2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* Hero cards */
+        .hero-card { margin: 8px 20px 16px; background: linear-gradient(135deg, #003D26 0%, #001A2E 100%); border: 0.5px solid rgba(0,196,122,0.2); border-radius: 22px; padding: 22px 22px 20px; position: relative; overflow: hidden; }
+        .hero-card::before { content: ''; position: absolute; top: -40px; right: -30px; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, rgba(0,196,122,0.15) 0%, transparent 70%); }
+        .hero-card-label { font-size: 12px; color: rgba(0,196,122,0.7); font-weight: 500; margin-bottom: 4px; }
+        .hero-card-amount { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; color: #fff; letter-spacing: -1.5px; line-height: 1; margin-bottom: 8px; }
+        .hero-card-row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 14px; border-top: 0.5px solid rgba(255,255,255,0.08); }
+        .hero-card-stat-label { font-size: 10px; color: rgba(255,255,255,0.4); }
+        .hero-card-stat-val { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85); margin-top: 1px; }
+
+        /* Quick actions */
+        .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 20px 20px; }
+        .qa-btn { background: var(--bg2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; text-align: left; transition: background 0.15s; text-decoration: none; display: block; }
+        .qa-btn:hover { background: var(--bg3); }
+        .qa-btn-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+        .qa-btn-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .qa-btn-icon.g { background: var(--green-bg); color: var(--green); }
+        .qa-btn-icon.r { background: var(--red-bg); color: var(--red); }
+        .qa-btn-icon.a { background: var(--amber-bg); color: var(--amber); }
+        .qa-btn-icon.b { background: var(--blue-bg); color: var(--blue); }
+        .qa-btn-title { font-size: 13px; font-weight: 500; color: var(--txt); }
+        .qa-btn-sub { font-size: 11px; color: var(--txt3); margin-top: 2px; }
+
+        /* Transactions */
+        .txn-item { display: flex; align-items: center; gap: 14px; padding: 12px 24px; transition: background 0.15s; }
+        .txn-icon { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .txn-info { flex: 1; }
+        .txn-name { font-size: 14px; font-weight: 500; }
+        .txn-time { font-size: 12px; color: var(--txt3); margin-top: 2px; }
+        .txn-amount { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+        .txn-amount.inc { color: var(--green); } .txn-amount.exp { color: var(--red); }
+
+        /* Stokvel */
+        .countdown-box { background: rgba(245,166,35,0.08); border: 0.5px solid rgba(245,166,35,0.2); border-radius: 12px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; }
+        .countdown-label { font-size: 11px; color: rgba(255,255,255,0.4); }
+        .countdown-val { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--amber); }
+        .member-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid rgba(255,255,255,0.05); }
+        .member-row:last-child { border: none; }
+        .member-avatar { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; }
+        .member-name { font-size: 13px; flex: 1; font-weight: 500; }
+        .member-month { font-size: 11px; color: rgba(255,255,255,0.35); margin-right: 6px; }
+        .member-badge { font-size: 10px; padding: 3px 8px; border-radius: 10px; font-weight: 500; }
+        .member-badge.current { background: var(--amber-bg); color: var(--amber); }
+        .member-badge.you { background: var(--blue-bg); color: var(--blue); }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 12px; padding: 10px 18px; font-size: 13px; font-weight: 500; color: var(--txt); z-index: 9999; white-space: nowrap; opacity: 0; transition: all 0.3s; pointer-events: none; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        .form-label { font-size: 12px; color: var(--txt2); margin-bottom: 6px; display: block; font-weight: 500; }
+        .form-input { width: 100%; background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 12px; padding: 14px 16px; color: var(--txt); font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; }
+        .form-input:focus { border-color: var(--green); }
+        select.form-input { appearance: none; }
+        .field-error { font-size: 12px; color: var(--red); margin-top: 4px; }
+        .validation-summary { background: var(--red-bg); border: 0.5px solid var(--red); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; color: var(--red); }
+
+        /* Sheet / modal overlay */
+        .sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; backdrop-filter: blur(4px); }
+        .sheet-overlay.open { opacity: 1; pointer-events: all; }
+        .sheet { width: 100%; max-width: 390px; margin: 0 auto; background: var(--bg2); border-radius: 28px 28px 0 0; border-top: 0.5px solid var(--border2); padding: 0 24px 40px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); max-height: 85vh; overflow-y: auto; }
+        .sheet-overlay.open .sheet { transform: translateY(0); }
+        .sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--border2); margin: 14px auto 22px; }
+        .sheet-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 22px; }
+
+        /* EOD banner */
+        .eod-banner { margin: 0 20px 16px; background: linear-gradient(135deg, rgba(0,196,122,0.15), rgba(0,196,122,0.05)); border: 0.5px solid rgba(0,196,122,0.3); border-radius: var(--radius-sm); padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; }
+        .eod-icon { font-size: 28px; }
+        .eod-title { font-size: 14px; font-weight: 500; color: var(--green); }
+        .eod-sub { font-size: 12px; color: var(--txt3); margin-top: 2px; }
+
+        /* Desktop bg hint */
+        @@media (min-width: 421px) {
+            body { background: #070809; }
+            .desktop-bg { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: -1; }
+            .desktop-bg-text { font-family: 'Syne', sans-serif; font-size: 120px; font-weight: 800; color: rgba(255,255,255,0.02); letter-spacing: -4px; user-select: none; }
+        }
+
+        /* Contribution rows */
+        .contrib-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid rgba(255,255,255,0.05); }
+        .contrib-row:last-child { border: none; }
+        .contrib-amount { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; }
+        .contrib-amount.paid { color: var(--green); }
+        .contrib-amount.pending { color: var(--txt3); }
+    </style>
     @RenderSection("Styles", required: false)
 </head>
-<body class="d-flex flex-column min-vh-100">
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Liopleurodons</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body>
+    <div class="desktop-bg"><span class="desktop-bg-text">Skhokho</span></div>
 
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Business" asp-action="Index">Products</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Stock" asp-action="Index">Stock</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Purchases" asp-action="Index">Purchases</a></li>
-                    </ul>
-                </div>
+    <div class="shell">
+        <div class="notch"></div>
+
+        <!-- Status bar -->
+        <div class="status">
+            <span class="status-time" id="statusTime">@DateTime.Now.ToString("HH:mm")</span>
+            <div class="status-icons">
+                <svg width="16" height="12" fill="currentColor" viewBox="0 0 16 12"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity=".3"/></svg>
+                🔋
             </div>
-        </nav>
-    </header>
+        </div>
 
-    <main role="main" class="flex-fill">
-        <div class="container py-4">
+        <!-- Main content -->
+        <div class="app-content">
+            @if (TempData["Toast"] != null)
+            {
+                <div id="autoToast" class="toast">@TempData["Toast"]</div>
+            }
             @RenderBody()
         </div>
-    </main>
 
-    <footer class="bg-light text-muted py-3 mt-auto">
-        <div class="container d-flex justify-content-between">
-            <small>&copy; @DateTime.Now.Year Liopleurodons Pocket Business Helper</small>
-            <small class="text-end">Lightweight local business helper</small>
-        </div>
-    </footer>
+        <!-- Bottom nav (only for logged-in users) -->
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <nav class="nav">
+                <a href="/business/" class="nav-btn @(activeNav == "business" ? "active" : "")">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/stock/" class="nav-btn @(activeNav == "stock" ? "active" : "")">
+                    <svg viewBox="0 0 24 24"><path d="M5 8h14M5 12h14M5 16h14" stroke-linecap="round"/></svg>
+                    <span>Stock</span>
+                </a>
+                <a href="/purchases/" class="nav-btn @(activeNav == "purchases" ? "active" : "")">
+                    <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    <span>Purchases</span>
+                </a>
+                <a href="/stokvel/" class="nav-btn @(activeNav == "stokvel" ? "active" : "")">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    <span>Stokvel</span>
+                </a>
+                <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="nav-btn" style="font-size:10px">
+                        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </nav>
+        }
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Live clock
+        (function () {
+            const el = document.getElementById('statusTime');
+            if (!el) return;
+            setInterval(() => {
+                const now = new Date();
+                el.textContent = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            }, 30000);
+        })();
+
+        // Auto-show server toast
+        (function () {
+            const t = document.getElementById('autoToast');
+            if (!t) return;
+            setTimeout(() => t.classList.add('show'), 100);
+            setTimeout(() => t.classList.remove('show'), 3200);
+        })();
+
+        // JS toast helper for client-side actions
+        function showToast(msg) {
+            let t = document.getElementById('jsToast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'jsToast';
+                t.className = 'toast';
+                document.body.appendChild(t);
+            }
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._hide);
+            t._hide = setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // Sheet toggle
+        function openSheet(id) { document.getElementById(id).classList.add('open'); }
+        function closeSheet(id) { document.getElementById(id).classList.remove('open'); }
+        document.addEventListener('click', e => {
+            if (e.target.classList.contains('sheet-overlay')) {
+                e.target.classList.remove('open');
+            }
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

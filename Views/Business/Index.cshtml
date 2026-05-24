@@ -1,32 +1,26 @@
-@model BusinessDashboardViewModel
+@model Liopleurodons_Pocket_Business_Helper.Models.ViewModels.BusinessDashboardViewModel
 @{
-    ViewData["Title"] = "Business";
+    ViewData["Title"] = "Dashboard";
     ViewData["ActiveNav"] = "business";
 }
 
-<!-- Page Header -->
+<!-- Header -->
 <div class="page-header">
     <div>
-        <div class="page-title">Skhokho</div>
-        <div class="page-sub">@Model.BusinessName · @Model.DayLabel</div>
+        <div class="page-title">@Model.BusinessName</div>
+        <div class="page-sub">@Model.DayLabel · Live dashboard</div>
     </div>
     <div class="avatar">@Model.OwnerInitials</div>
 </div>
 
-<!-- Profit Hero Card -->
+<!-- Revenue Hero Card -->
 <div class="hero-card">
-    <div class="hero-card-label">Today's Profit</div>
-    <div class="hero-card-amount">R@Model.TodayProfit.ToString("N0")</div>
-    <div style="margin-top:4px">
-        <span class="pill @(Model.TodayProfit >= 0 ? "green" : "red")">
-            R@Model.TodayRevenue.ToString("N2") revenue today
-        </span>
-    </div>
+    <div class="hero-card-label">TODAY'S REVENUE</div>
+    <div class="hero-card-amount">R@Model.TodayRevenue.ToString("N2")</div>
+    <span class="pill @(Model.TodayProfit >= 0 ? "green" : "red")">
+        @(Model.TodayProfit >= 0 ? "+" : "")R@Model.TodayProfit.ToString("N2") profit
+    </span>
     <div class="hero-card-row">
-        <div class="hero-card-stat">
-            <div class="hero-card-stat-label">Revenue</div>
-            <div class="hero-card-stat-val">R@Model.TodayRevenue.ToString("N2")</div>
-        </div>
         <div class="hero-card-stat">
             <div class="hero-card-stat-label">Expenses</div>
             <div class="hero-card-stat-val">R@Model.TodayExpenses.ToString("N2")</div>
@@ -35,84 +29,67 @@
             <div class="hero-card-stat-label">Transactions</div>
             <div class="hero-card-stat-val">@Model.TodayTransactionCount</div>
         </div>
+        <div class="hero-card-stat">
+            <div class="hero-card-stat-label">Margin</div>
+            <div class="hero-card-stat-val">@(Model.TodayRevenue > 0 ? ((Model.TodayProfit / Model.TodayRevenue) * 100).ToString("0") + "%" : "—")</div>
+        </div>
     </div>
 </div>
 
 <!-- Quick Actions -->
 <div class="quick-actions">
-    <a asp-controller="Purchases" asp-action="Create" class="qa-btn">
+    <a asp-controller="Purchases" asp-action="RestockCreate" class="qa-btn">
         <div class="qa-btn-icon g">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </div>
         <div class="qa-btn-title">Record Sale</div>
-        <div class="qa-btn-sub">Log income</div>
+        <div class="qa-btn-sub">Log new income</div>
     </a>
-
-    <a asp-controller="Purchases" asp-action="RestockCreate" class="qa-btn">
+    <a asp-controller="Purchases" asp-action="Create" class="qa-btn">
         <div class="qa-btn-icon r">
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
         </div>
-        <div class="qa-btn-title">Add Expense</div>
-        <div class="qa-btn-sub">Log restock cost</div>
+        <div class="qa-btn-title">Log Expense</div>
+        <div class="qa-btn-sub">Record a spend</div>
     </a>
-
-    <a asp-controller="ATM" asp-action="Index" class="qa-btn">
-        <div class="qa-btn-icon a">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-        </div>
-        <div class="qa-btn-title">Find ATM</div>
-        <div class="qa-btn-sub">Deposit cash</div>
-    </a>
-
     <a asp-controller="Stock" asp-action="Index" class="qa-btn">
-        <div class="qa-btn-icon b">
-            <svg viewBox="0 0 24 24"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <div class="qa-btn-icon a">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
         </div>
         <div class="qa-btn-title">Stock Levels</div>
         <div class="qa-btn-sub">View inventory</div>
     </a>
+    <a asp-controller="Stokvel" asp-action="Index" class="qa-btn">
+        <div class="qa-btn-icon b">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="qa-btn-title">Stokvel</div>
+        <div class="qa-btn-sub">R@((Model.TodayRevenue + 12000).ToString("N0")) pot</div>
+    </a>
 </div>
 
-<!-- Deposit Banner (shown when there's revenue today) -->
 @if (Model.ShowDepositBanner)
 {
-    <a asp-controller="ATM" asp-action="Index" class="eod-banner">
+    <div class="eod-banner">
         <div class="eod-icon">🏦</div>
         <div>
             <div class="eod-title">Ready to deposit?</div>
-            <div class="eod-sub">Find the nearest ATM and bank today's profit</div>
+            <div class="eod-sub">R@Model.TodayRevenue.ToString("N2") cash on hand</div>
         </div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18l6-6-6-6"/>
-        </svg>
-    </a>
-}
-
-<!-- Today's Ledger -->
-<div class="section-title">Today's Ledger</div>
-
-@if (!Model.RecentTransactions.Any())
-{
-    <div class="empty-state">
-        <div class="empty-state-icon">🧾</div>
-        <div class="empty-state-title">No transactions yet</div>
-        Tap "Record Sale" to log your first sale today.
     </div>
 }
-else
-{
-    @foreach (var txn in Model.RecentTransactions)
-    {
-        <div class="txn-item">
-            <div class="txn-icon" style="background:@txn.IconBackground; font-size:18px">@txn.Emoji</div>
-            <div class="txn-info">
-                <div class="txn-name">@txn.Description</div>
-                <div class="txn-time">Today, @txn.TimeLabel · @txn.TypeLabel</div>
-            </div>
-            <div class="txn-amount @txn.AmountCssClass">@txn.AmountDisplay</div>
-        </div>
-    }
-}
 
-<!-- Bottom spacer for nav overlap -->
-<div style="height:8px"></div>
+<!-- Recent Transactions -->
+<div class="section-title">Recent Transactions</div>
+@foreach (var txn in Model.RecentTransactions)
+{
+    <div class="txn-item">
+        <div class="txn-icon" style="background:@txn.IconBackground">@txn.Emoji</div>
+        <div class="txn-info">
+            <div class="txn-name">@txn.Description</div>
+            <div class="txn-time">@txn.TypeLabel · @txn.TimeLabel</div>
+        </div>
+        <div class="txn-amount @txn.AmountCssClass">@txn.AmountDisplay</div>
+    </div>
+}
+<div style="height:8px;"></div>

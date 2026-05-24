@@ -1,0 +1,54 @@
+@model Liopleurodons_Pocket_Business_Helper.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div style="padding: 60px 24px 24px;">
+    <!-- Logo / Brand -->
+    <div style="text-align:center; margin-bottom: 40px;">
+        <div style="width:64px; height:64px; border-radius:20px; background:linear-gradient(135deg,var(--green),var(--blue)); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-family:'Syne',sans-serif; font-size:26px; font-weight:800; color:#fff;">S</div>
+        <div style="font-family:'Syne',sans-serif; font-size:28px; font-weight:800; letter-spacing:-0.5px;">Skhokho</div>
+        <div style="font-size:13px; color:var(--txt2); margin-top:4px;">Informal Business Banking</div>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+    {
+        <div class="validation-summary">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        </div>
+    }
+
+    <form asp-action="Login" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+        <div class="form-group">
+            <label class="form-label">Email address</label>
+            <input asp-for="Email" class="form-input" type="email" placeholder="you@example.com" autocomplete="email" />
+            <span asp-validation-for="Email" class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input asp-for="Password" class="form-input" type="password" placeholder="••••••••" autocomplete="current-password" />
+            <span asp-validation-for="Password" class="field-error"></span>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+            <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--txt2); cursor:pointer;">
+                <input asp-for="RememberMe" type="checkbox" style="accent-color:var(--green);" />
+                Remember me
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-bottom:14px;">Sign In</button>
+    </form>
+
+    <div style="text-align:center; font-size:13px; color:var(--txt3); margin-top:8px;">
+        Don't have an account?
+        <a asp-action="Register" style="color:var(--green); text-decoration:none; font-weight:500;"> Create one →</a>
+    </div>
+</div>

@@ -13,15 +13,8 @@ namespace Liopleurodons_Pocket_Business_Helper
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
-            // SQLite — works on Windows, Linux, and macOS without extra setup.
-            // To switch to SQL Server, comment this out and uncomment the UseSqlServer block below,
-            // then update appsettings.json with a valid SQL Server connection string.
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-            // SQL Server option (requires a running SQL Server / LocalDB instance):
-            //builder.Services.AddDbContext<AppDbContext>(options =>
-            //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddRouting(options =>
             {
@@ -29,21 +22,36 @@ namespace Liopleurodons_Pocket_Business_Helper
                 options.AppendTrailingSlash = true;
             });
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+            // Identity with login path configured
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+            // Redirect unauthenticated users to /account/login
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/account/login";
+                options.LogoutPath = "/account/logout";
+                options.AccessDeniedPath = "/account/login";
+            });
 
             var app = builder.Build();
 
             app.UseStaticFiles();
             app.UseRouting();
 
-            // UseAuthentication must come before UseAuthorization
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}/{slug?}");
+                pattern: "{controller=Business}/{action=Index}/{id?}/{slug?}");
 
             SeedData.EnsurePopulated(app);
 
